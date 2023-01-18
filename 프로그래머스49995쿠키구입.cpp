@@ -7,38 +7,60 @@
 
 using namespace std;
 
-vector<int> sum_vec;
+int g_max = 0;
+vector<int> g_cookie;
 
-int solution(vector<int> cookie) {
-    sum_vec.resize(cookie.size() + 1);
-    int sum = 0;
-    sum_vec[0] = 0;
-    for (size_t i = 0; i < cookie.size(); ++i)
+void search(int m)
+{
+    int lsum = g_cookie[m - 1];
+    int rsum = g_cookie[m];
+    int lpos = m - 1;
+    int rpos = m;
+    while (true)
     {
-        sum += cookie[i];
-        sum_vec[i + 1] = sum;
-    }
-    // l < m < r
-    int max_answer = 0;
-    for (int l = 0; l < sum_vec.size() - 2; ++l)
-    {
-        for (int m = l; m < sum_vec.size() - 1; ++m)
+        if (lsum == rsum)
         {
-            for (int r = m + 1; r < sum_vec.size(); ++r)
+            if (g_max < lsum)
             {
-                int left_sum = sum_vec[m] - sum_vec[l];
-                int right_sum = sum_vec[r] - sum_vec[m];
-                if (left_sum == right_sum)
-                {
-                    if (max_answer < left_sum)
-                    {
-                        max_answer = left_sum;
-                    }
-                }
+                g_max = lsum;
             }
+            if (lpos > 0)
+            {
+                lpos--;
+                lsum += g_cookie[lpos];
+            }
+            else if (rpos < g_cookie.size())
+            {
+                rpos++;
+                rsum += g_cookie[rpos];
+            }
+            continue;
+        }
+        if (lpos > 0 && lsum < rsum)
+        {
+            lpos--;
+            lsum += g_cookie[lpos];
+        }
+        else if (rpos < g_cookie.size() - 1 && lsum > rsum)
+        {
+            rpos++;
+            rsum += g_cookie[rpos];
+        }
+        else
+        {
+            break;
         }
     }
-    int answer = max_answer;
+}
+
+int solution(vector<int> cookie) {
+
+    g_cookie = std::move(cookie);
+    for (int m = 1; m < g_cookie.size(); ++m)
+    {
+        search(m);
+    }
+    int answer = g_max;
     return answer;
 }
 
