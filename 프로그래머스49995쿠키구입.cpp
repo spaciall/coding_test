@@ -24,24 +24,13 @@ void search(int m)
             {
                 g_max = lsum;
             }
-            if (lpos > 0)
-            {
-                lpos--;
-                lsum += g_cookie[lpos];
-            }
-            else if (rpos < g_cookie.size())
-            {
-                rpos++;
-                rsum += g_cookie[rpos];
-            }
-            continue;
         }
-        if (lpos > 0 && lsum < rsum)
+        if (lpos > 0 && lsum <= rsum)
         {
             lpos--;
             lsum += g_cookie[lpos];
         }
-        else if (rpos < g_cookie.size() - 1 && lsum > rsum)
+        else if (rpos < g_cookie.size() - 1 && lsum >= rsum)
         {
             rpos++;
             rsum += g_cookie[rpos];
