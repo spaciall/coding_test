@@ -5,8 +5,8 @@ using namespace std;
 
 int repeat_count_to_len(int repeat)
 {
-	if (repeat < 10)
-	{
+    if (repeat < 10)
+    {
         return 1;
     }
     else if (repeat < 100)
